@@ -910,26 +910,6 @@
             alert(statsHtml);
         }
 
-        // Funcionalidad de exportar términos estudiados
-        function exportProgress() {
-            const studiedTerms = Array.from(viewedTerms);
-            const progress = {
-                totalTerms: glossaryTerms.length,
-                studiedTerms: studiedTerms,
-                studiedCount: studiedTerms.length,
-                percentage: ((studiedTerms.length / glossaryTerms.length) * 100).toFixed(1),
-                quizScore: quizScore,
-                timestamp: new Date().toISOString()
-            };
-            
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(progress, null, 2));
-            const downloadAnchorNode = document.createElement('a');
-            downloadAnchorNode.setAttribute("href", dataStr);
-            downloadAnchorNode.setAttribute("download", "progreso_glosario_marketing.json");
-            document.body.appendChild(downloadAnchorNode);
-            downloadAnchorNode.click();
-            downloadAnchorNode.remove();
-        }
 
         // Agregar botones adicionales
         document.addEventListener('DOMContentLoaded', function() {
