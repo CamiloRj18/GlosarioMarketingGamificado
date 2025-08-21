@@ -306,6 +306,43 @@
             cursor: pointer;
         }
 
+        /* CSS adicional para modo nocturno */
+        .dark-mode {
+            background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+        }
+        .dark-mode .header {
+            background: rgba(45, 55, 72, 0.95);
+            color: white;
+        }
+        .dark-mode .header h1 {
+            color: white;
+        }
+        .dark-mode .header p {
+            color: #cbd5e0;
+        }
+        .dark-mode .term-card {
+            background: rgba(45, 55, 72, 0.9);
+            color: white;
+        }
+        .dark-mode .term-title {
+            color: white;
+        }
+        .dark-mode .term-definition {
+            color: #cbd5e0;
+        }
+        .dark-mode .search-input {
+            background: rgba(45, 55, 72, 0.9);
+            color: white;
+        }
+        .dark-mode .stat-card {
+            background: rgba(45, 55, 72, 0.9);
+            color: white;
+        }
+        .dark-mode .quiz-content {
+            background: #2d3748;
+            color: white;
+        }
+
         @media (max-width: 768px) {
             .header h1 { font-size: 1.5rem; }
             .container { padding: 1rem; }
@@ -317,7 +354,7 @@
 <body>
     <div class="header">
         <h1>📚 Glosario Interactivo Marketing Digital & Mix</h1>
-        <p>Aprende los conceptos fundamentales de manera divertida e interactiva</p>
+        <p>Aprende los conceptos fundamentales de manera divertida e interactiva - 60 términos esenciales</p>
     </div>
 
     <div class="container">
@@ -327,6 +364,7 @@
             <button class="btn quiz" onclick="startQuiz()">🧠 Quiz Interactivo</button>
             <button class="btn" onclick="showByCategory('4Ps')">4P's</button>
             <button class="btn" onclick="showByCategory('4Cs')">4C's</button>
+            <button class="btn secondary" onclick="toggleDarkMode()">🌙 Modo Nocturno</button>
         </div>
 
         <div class="search-container">
@@ -336,7 +374,7 @@
 
         <div class="stats">
             <div class="stat-card">
-                <div class="stat-number" id="totalTerms">50</div>
+                <div class="stat-number" id="totalTerms">60</div>
                 <div>Términos Totales</div>
             </div>
             <div class="stat-card">
@@ -365,7 +403,7 @@
     </div>
 
     <script>
-        // Base de datos de términos extraídos de los documentos
+        // Base de datos de términos extendida a 60 términos
         const glossaryTerms = [
             {
                 term: "Marketing Mix",
@@ -672,6 +710,61 @@
                 definition: "Marketing tradicional que busca activamente a los clientes mediante publicidad interrumpida.",
                 category: "Marketing Tradicional",
                 example: "Comerciales de TV, llamadas telefónicas, emails masivos"
+            },
+            // 9 NUEVOS TÉRMINOS AÑADIDOS
+            {
+                term: "KPI",
+                definition: "Key Performance Indicator - Indicadores clave de rendimiento que miden el éxito de una estrategia de marketing.",
+                category: "Métricas",
+                example: "CTR, tasa de conversión, costo por lead, engagement rate"
+            },
+            {
+                term: "Remarketing",
+                definition: "Técnica que permite mostrar anuncios personalizados a usuarios que ya visitaron tu sitio web.",
+                category: "Marketing Digital",
+                example: "Mostrar anuncios de productos que el usuario vio pero no compró"
+            },
+            {
+                term: "A/B Testing",
+                definition: "Método de comparación de dos versiones de una página web o campaña para determinar cuál funciona mejor.",
+                category: "Análisis",
+                example: "Probar dos versiones de un email para ver cuál tiene mayor apertura"
+            },
+            {
+                term: "Landing Page",
+                definition: "Página web diseñada específicamente para convertir visitantes en leads o clientes a través de una acción específica.",
+                category: "Marketing Digital",
+                example: "Página de descarga de ebook, página de suscripción a newsletter"
+            },
+            {
+                term: "Funnel de Ventas",
+                definition: "Representación del proceso que siguen los clientes desde el primer contacto hasta la compra final.",
+                category: "Estrategia",
+                example: "Conciencia > Interés > Consideración > Compra > Fidelización"
+            },
+            {
+                term: "Cross-selling",
+                definition: "Técnica de venta que consiste en ofrecer productos complementarios al que el cliente ya está comprando.",
+                category: "Estrategia",
+                example: "Ofrecer fundas y protectores al comprar un smartphone"
+            },
+            {
+                term: "Upselling",
+                definition: "Estrategia que busca que el cliente adquiera una versión superior o más costosa del producto que planea comprar.",
+                category: "Estrategia",
+                example: "Sugerir la versión premium en lugar de la básica"
+            },
+            {
+                term: "Social Listening",
+                definition: "Monitoreo y análisis de conversaciones en redes sociales para entender la percepción de marca.",
+                category: "Marketing Digital",
+                example: "Seguimiento de menciones de marca en Twitter, Facebook e Instagram"
+            },
+            {
+                term: "Marketing Automation",
+                definition: "Uso de software para automatizar tareas de marketing repetitivas y personalizar la comunicación con clientes.",
+                category: "Marketing Digital",
+                example: "Emails automáticos de bienvenida, secuencias de nurturing de leads"
             }
         ];
 
@@ -690,6 +783,17 @@
             document.getElementById('searchInput').addEventListener('input', function() {
                 searchTerms();
             });
+
+            // Agregar botón de ayuda
+            const helpBtn = document.createElement('button');
+            helpBtn.className = 'btn';
+            helpBtn.innerHTML = '❓ Ayuda';
+            helpBtn.onclick = showHelp;
+            helpBtn.style.position = 'fixed';
+            helpBtn.style.bottom = '20px';
+            helpBtn.style.right = '20px';
+            helpBtn.style.zIndex = '999';
+            document.body.appendChild(helpBtn);
         });
 
         function displayTerms(terms) {
@@ -894,39 +998,6 @@
             document.getElementById('quizModal').style.display = 'none';
         }
 
-        // Funcionalidades adicionales
-        function showStatistics() {
-            const categoryCount = {};
-            glossaryTerms.forEach(term => {
-                categoryCount[term.category] = (categoryCount[term.category] || 0) + 1;
-            });
-            
-            
-            alert(statsHtml);
-        }
-
-
-        // Agregar botones adicionales
-        document.addEventListener('DOMContentLoaded', function() {
-            const controlsDiv = document.querySelector('.game-controls');
-            
-
-            
-            // Botón de exportar progreso
-            const exportBtn = document.createElement('button');
-            exportBtn.className = 'btn secondary';
-            exportBtn.innerHTML = '💾 Exportar Progreso';
-            exportBtn.onclick = exportProgress;
-            controlsDiv.appendChild(exportBtn);
-        });
-
-        // Función para mostrar términos favoritos (simulación)
-        function toggleFavorite(term) {
-            // Esta funcionalidad se podría implementar con localStorage en un entorno real
-            console.log('Término marcado como favorito:', term);
-        }
-
-        // Función de ayuda
         function showHelp() {
             const helpContent = `
                 <h3>🎮 Cómo usar el Glosario Interactivo</h3>
@@ -935,7 +1006,8 @@
                     <li><strong>📋 Ver Todos:</strong> Muestra todos los términos disponibles</li>
                     <li><strong>🧠 Quiz:</strong> Inicia un quiz de 10 preguntas aleatorias</li>
                     <li><strong>4P's/4C's:</strong> Filtra términos por categoría</li>
-                    <li><strong>🔍 Buscar:</strong> Busca términos por palabra clave</li>                    
+                    <li><strong>🔍 Buscar:</strong> Busca términos por palabra clave</li>
+                    <li><strong>🌙 Modo Nocturno:</strong> Cambia el tema visual</li>
                 </ul>
                 <p><strong>💡 Consejo:</strong> Haz clic en cualquier tarjeta para marcarla como vista y seguir tu progreso.</p>
             `;
@@ -945,47 +1017,27 @@
             document.getElementById('quizModal').style.display = 'block';
         }
 
-        // Agregar botón de ayuda
-        document.addEventListener('DOMContentLoaded', function() {
-            const helpBtn = document.createElement('button');
-            helpBtn.className = 'btn';
-            helpBtn.innerHTML = '❓ Ayuda';
-            helpBtn.onclick = showHelp;
-            helpBtn.style.position = 'fixed';
-            helpBtn.style.bottom = '20px';
-            helpBtn.style.right = '20px';
-            helpBtn.style.zIndex = '999';
-            document.body.appendChild(helpBtn);
-        });
-
-        // Funcionalidad para modo nocturno
         function toggleDarkMode() {
             document.body.classList.toggle('dark-mode');
         }
 
-        // CSS adicional para modo nocturno
-        const darkModeCSS = `
-            .dark-mode {
-                background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
-            }
-            .dark-mode .header {
-                background: rgba(45, 55, 72, 0.95);
-                color: white;
-            }
-            .dark-mode .term-card {
-                background: rgba(45, 55, 72, 0.9);
-                color: white;
-            }
-            .dark-mode .search-input {
-                background: rgba(45, 55, 72, 0.9);
-                color: white;
-            }
-        `;
-
-        // Agregar CSS para modo nocturno
-        const styleSheet = document.createElement('style');
-        styleSheet.textContent = darkModeCSS;
-        document.head.appendChild(styleSheet);
+        // Función para exportar progreso (simulación)
+        function exportProgress() {
+            const progressData = {
+                totalTerms: glossaryTerms.length,
+                viewedTerms: Array.from(viewedTerms),
+                lastQuizScore: quizScore,
+                progress: (viewedTerms.size / glossaryTerms.length) * 100
+            };
+            
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(progressData, null, 2));
+            const downloadAnchorNode = document.createElement('a');
+            downloadAnchorNode.setAttribute("href", dataStr);
+            downloadAnchorNode.setAttribute("download", "progreso_glosario_marketing.json");
+            document.body.appendChild(downloadAnchorNode);
+            downloadAnchorNode.click();
+            downloadAnchorNode.remove();
+        }
     </script>
 </body>
 </html>
