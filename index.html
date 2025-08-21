@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glosario Interactivo Marketing Digital y Mix</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .header h1 {
+            color: #4a5568;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: #718096;
+            font-size: 1.1rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .game-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a6f);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(238, 90, 111, 0.4);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(238, 90, 111, 0.6);
+        }
+
+        .btn.secondary {
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+        }
+
+        .btn.quiz {
+            background: linear-gradient(45deg, #f093fb, #f5576c);
+        }
+
+        .search-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .search-input {
+            padding: 12px 20px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 25px 0 0 25px;
+            width: 300px;
+            outline: none;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .search-btn {
+            padding: 12px 20px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 0 25px 25px 0;
+            cursor: pointer;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 1rem 2rem;
+            border-radius: 15px;
+            text-align: center;
+            min-width: 120px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .glossary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .term-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .term-card:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+        }
+
+        .term-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .term-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #4a5568;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .category-tag {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            margin-left: auto;
+        }
+
+        .term-definition {
+            color: #718096;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .term-example {
+            background: rgba(102, 126, 234, 0.1);
+            padding: 0.8rem;
+            border-radius: 8px;
+            font-style: italic;
+            border-left: 4px solid #667eea;
+        }
+
+        .quiz-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+        }
+
+        .quiz-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .quiz-question {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: #4a5568;
+        }
+
+        .quiz-options {
+            display: grid;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .quiz-option {
+            padding: 1rem;
+            background: #f7fafc;
+            border: 2px solid transparent;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quiz-option:hover {
+            background: #e2e8f0;
+            border-color: #667eea;
+        }
+
+        .quiz-option.selected {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .quiz-option.correct {
+            background: #48bb78;
+            color: white;
+        }
+
+        .quiz-option.incorrect {
+            background: #f56565;
+            color: white;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #e2e8f0;
+            border-radius: 5px;
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .floating-icon {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 1.5rem;
+            opacity: 0.7;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 2rem;
+            color: #999;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.5rem; }
+            .container { padding: 1rem; }
+            .stats { gap: 1rem; }
+            .search-input { width: 250px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📚 Glosario Interactivo Marketing Digital & Mix</h1>
+        <p>Aprende los conceptos fundamentales de manera divertida e interactiva</p>
+    </div>
+
+    <div class="container">
+        <div class="game-controls">
+            <button class="btn" onclick="showRandomTerm()">🎲 Término Aleatorio</button>
+            <button class="btn secondary" onclick="showAllTerms()">📋 Ver Todos</button>
+            <button class="btn quiz" onclick="startQuiz()">🧠 Quiz Interactivo</button>
+            <button class="btn" onclick="showByCategory('4Ps')">4P's</button>
+            <button class="btn" onclick="showByCategory('4Cs')">4C's</button>
+        </div>
+
+        <div class="search-container">
+            <input type="text" class="search-input" id="searchInput" placeholder="Buscar término...">
+            <button class="search-btn" onclick="searchTerms()">🔍</button>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number" id="totalTerms">50</div>
+                <div>Términos Totales</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="viewedTerms">0</div>
+                <div>Vistos</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="quizScore">0</div>
+                <div>Puntuación Quiz</div>
+            </div>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <div class="glossary-grid" id="glossaryGrid"></div>
+    </div>
+
+    <!-- Modal para Quiz -->
+    <div class="quiz-modal" id="quizModal">
+        <div class="quiz-content">
+            <button class="close-modal" onclick="closeQuiz()">×</button>
+            <div id="quizContainer"></div>
+        </div>
+    </div>
+
+    <script>
+        // Base de datos de términos extraídos de los documentos
+        const glossaryTerms = [
+            {
+                term: "Marketing Mix",
+                definition: "Mezcla de mercadotecnia dedicada al análisis del comportamiento de los mercados y consumidores que busca retener y fidelizar clientes mediante la satisfacción de sus necesidades.",
+                category: "Conceptos Básicos",
+                example: "Las 4 P's tradicionales: Producto, Precio, Plaza y Promoción"
+            },
+            {
+                term: "Producto",
+                definition: "Todo lo que se ofrece al cliente para su compra, uso, consumo o atención. No necesariamente es un artículo tangible, pues puede incluir servicios, personalidades, lugares o ideas.",
+                category: "4Ps",
+                example: "Bienes tangibles, servicios, personalidades, lugares, combinaciones"
+            },
+            {
+                term: "Precio",
+                definition: "Valor monetario asignado a un producto o servicio en el mercado.",
+                category: "4Ps",
+                example: "Estrategias de precios como descremado o penetración"
+            },
+            {
+                term: "Plaza",
+                definition: "Canales de distribución y puntos de venta donde el producto estará disponible para los consumidores.",
+                category: "4Ps",
+                example: "Tiendas físicas, e-commerce, distribuidores"
+            },
+            {
+                term: "Promoción",
+                definition: "Conjunto de actividades de comunicación para dar a conocer y persuadir sobre la compra del producto.",
+                category: "4Ps",
+                example: "Publicidad, relaciones públicas, promociones de venta"
+            },
+            {
+                term: "Consumidor",
+                definition: "En las 4 C's, reemplaza al producto poniendo al cliente en el centro de la estrategia de marketing.",
+                category: "4Cs",
+                example: "Enfoque customer-centric que prioriza las necesidades del cliente"
+            },
+            {
+                term: "Comunicación",
+                definition: "Reemplaza a la promoción, estableciendo una relación bidireccional con el cliente que permite generar conversaciones.",
+                category: "4Cs",
+                example: "Interacción en redes sociales, atención al cliente personalizada"
+            },
+            {
+                term: "Coste",
+                definition: "Sustituye al precio, considerando todos los costos que el cliente asume, no solo el monetario.",
+                category: "4Cs",
+                example: "Tiempo, esfuerzo, desplazamiento, además del precio monetario"
+            },
+            {
+                term: "Conveniencia",
+                definition: "Reemplaza la plaza, enfocándose en hacer más fácil, rápido y accesible la compra para el consumidor.",
+                category: "4Cs",
+                example: "Compras online, entrega a domicilio, horarios extendidos"
+            },
+            {
+                term: "Productos de Consumo",
+                definition: "Artículos que un consumidor final adquiere para su uso personal.",
+                category: "Clasificación",
+                example: "Alimentos, ropa, electrodomésticos"
+            },
+            {
+                term: "Productos de Conveniencia",
+                definition: "Bienes de consumo que se adquieren con frecuencia y poca comparación.",
+                category: "Clasificación",
+                example: "Cigarrillos, periódicos, dulces"
+            },
+            {
+                term: "Productos de Compra",
+                definition: "Bienes que el cliente selecciona y compara en términos de conveniencia, calidad, precio y estilo.",
+                category: "Clasificación",
+                example: "Electrodomésticos, automóviles, muebles"
+            },
+            {
+                term: "Productos de Especialidad",
+                definition: "Bienes con características únicas por los cuales los compradores están dispuestos a realizar un esfuerzo especial de compra.",
+                category: "Clasificación",
+                example: "Marcas de lujo, productos artesanales exclusivos"
+            },
+            {
+                term: "Producto Industrial",
+                definition: "Producto comprado por personas y organizaciones para procesamiento posterior o uso en actividades comerciales.",
+                category: "Clasificación",
+                example: "Maquinaria, materias primas, componentes"
+            },
+            {
+                term: "Marca",
+                definition: "Signos que permiten distinguir productos, servicios y establecimientos en el mercado, construyendo ventaja competitiva.",
+                category: "Elementos del Producto",
+                example: "Coca-Cola, Nike, Apple"
+            },
+            {
+                term: "Garantía",
+                definition: "Obligación temporal del productor de responder por el buen estado del producto y su conformidad con estándares de calidad.",
+                category: "Elementos del Producto",
+                example: "Garantía de 2 años en electrodomésticos"
+            },
+            {
+                term: "Empaque",
+                definition: "Protege productos, facilita transporte y almacenaje, mejora imagen, da funcionalidad y facilita identificación.",
+                category: "Elementos del Producto",
+                example: "Cajas, envolturas, contenedores"
+            },
+            {
+                term: "Etiquetado",
+                definition: "Identifica el producto e informa al consumidor sobre características, composición y origen.",
+                category: "Elementos del Producto",
+                example: "Información nutricional, instrucciones de uso"
+            },
+            {
+                term: "Ciclo de Vida del Producto",
+                definition: "Evolución que sigue un producto desde su introducción hasta su retiro: introducción, crecimiento, madurez y declive.",
+                category: "Gestión de Producto",
+                example: "El iPhone pasando por diferentes generaciones"
+            },
+            {
+                term: "Etapa de Introducción",
+                definition: "Primera fase del ciclo donde el producto se lanza al mercado con campañas intensas para darlo a conocer.",
+                category: "Ciclo de Vida",
+                example: "Lanzamiento de un nuevo smartphone"
+            },
+            {
+                term: "Etapa de Crecimiento",
+                definition: "Las ventas aumentan, el producto se conoce más y la empresa comienza a obtener beneficios.",
+                category: "Ciclo de Vida",
+                example: "Netflix expandiéndose globalmente"
+            },
+            {
+                term: "Etapa de Madurez",
+                definition: "Fase más rentable donde las ventas son máximas y los gastos en promoción mínimos.",
+                category: "Ciclo de Vida",
+                example: "Coca-Cola en mercados desarrollados"
+            },
+            {
+                term: "Etapa de Declive",
+                definition: "Las ventas disminuyen por competencia, cambios tecnológicos o cambios en gustos del consumidor.",
+                category: "Ciclo de Vida",
+                example: "DVD siendo reemplazados por streaming"
+            },
+            {
+                term: "Segmentación de Mercado",
+                definition: "Proceso para identificar grupos de compradores homogéneos, dividiendo el mercado en submercados.",
+                category: "Estrategia",
+                example: "Segmentar por edad, ingresos, ubicación geográfica"
+            },
+            {
+                term: "Marketing Relacional",
+                definition: "Enfoque que pone al consumidor en el centro y da importancia a todos los stakeholders.",
+                category: "4Cs",
+                example: "CRM (Customer Relationship Management)"
+            },
+            {
+                term: "Customer Centric",
+                definition: "Modelo que sitúa al cliente en el centro de todas las decisiones empresariales.",
+                category: "4Cs",
+                example: "Amazon priorizando la experiencia del cliente"
+            },
+            {
+                term: "Engagement",
+                definition: "Nivel de compromiso e interacción que tienen los consumidores con una marca.",
+                category: "Marketing Digital",
+                example: "Interacciones en redes sociales, tiempo en sitio web"
+            },
+            {
+                term: "Marketing Viral",
+                definition: "Estrategia que busca que el contenido se propague rápidamente entre usuarios.",
+                category: "Marketing Digital",
+                example: "Videos que se vuelven tendencia en redes sociales"
+            },
+            {
+                term: "Stakeholders",
+                definition: "Todas las partes interesadas en una empresa: trabajadores, accionistas, proveedores, acreedores, clientes.",
+                category: "4Cs",
+                example: "Empleados, inversores, comunidad local"
+            },
+            {
+                term: "CRM",
+                definition: "Customer Relationship Management - Gestión de relaciones con clientes para mejorar retención y satisfacción.",
+                category: "Marketing Digital",
+                example: "Salesforce, HubSpot"
+            },
+            {
+                term: "E-commerce",
+                definition: "Comercio electrónico que permite compra y venta de productos a través de internet.",
+                category: "Marketing Digital",
+                example: "Amazon, MercadoLibre"
+            },
+            {
+                term: "Target",
+                definition: "Público objetivo al cual se dirigen las estrategias de marketing.",
+                category: "Estrategia",
+                example: "Jóvenes de 18-25 años con ingresos medios"
+            },
+            {
+                term: "Posicionamiento",
+                definition: "Lugar que ocupa un producto o marca en la mente del consumidor respecto a la competencia.",
+                category: "Estrategia",
+                example: "Volvo = Seguridad, BMW = Lujo deportivo"
+            },
+            {
+                term: "Branding",
+                definition: "Proceso de crear y gestionar una marca para generar valor y diferenciación.",
+                category: "Marca",
+                example: "Desarrollo de identidad visual y personalidad de marca"
+            },
+            {
+                term: "ROI",
+                definition: "Return on Investment - Retorno de la inversión que mide la eficiencia de las acciones de marketing.",
+                category: "Métricas",
+                example: "Por cada peso invertido en publicidad, se generan 3 pesos en ventas"
+            },
+            {
+                term: "Leads",
+                definition: "Contactos comerciales potenciales que han mostrado interés en un producto o servicio.",
+                category: "Marketing Digital",
+                example: "Usuario que deja sus datos en un formulario web"
+            },
+            {
+                term: "Conversión",
+                definition: "Acción deseada que realiza un usuario, como comprar, suscribirse o descargar.",
+                category: "Marketing Digital",
+                example: "Visitante web que completa una compra"
+            },
+            {
+                term: "Fidelización",
+                definition: "Estrategias para mantener a los clientes satisfechos y lograr compras repetidas.",
+                category: "Estrategia",
+                example: "Programas de lealtad, atención post-venta"
+            },
+            {
+                term: "Insight",
+                definition: "Conocimiento profundo sobre el comportamiento y motivaciones del consumidor.",
+                category: "Investigación",
+                example: "Los millennials valoran más las experiencias que los objetos"
+            },
+            {
+                term: "Benchmarking",
+                definition: "Proceso de comparar productos, servicios y procesos con los de la competencia.",
+                category: "Análisis",
+                example: "Comparar precios y características con competidores directos"
+            },
+            {
+                term: "Omnicanalidad",
+                definition: "Estrategia que integra todos los canales de comunicación para ofrecer experiencia unificada.",
+                category: "Estrategia",
+                example: "Misma experiencia en tienda física, web y app móvil"
+            },
+            {
+                term: "Marketing Digital",
+                definition: "Aplicación de estrategias de marketing en medios y canales digitales.",
+                category: "Marketing Digital",
+                example: "SEO, SEM, redes sociales, email marketing"
+            },
+            {
+                term: "SEO",
+                definition: "Search Engine Optimization - Optimización para motores de búsqueda.",
+                category: "Marketing Digital",
+                example: "Aparecer en los primeros resultados de Google"
+            },
+            {
+                term: "SEM",
+                definition: "Search Engine Marketing - Marketing en motores de búsqueda mediante publicidad pagada.",
+                category: "Marketing Digital",
+                example: "Google Ads, anuncios patrocinados"
+            },
+            {
+                term: "Influencer Marketing",
+                definition: "Estrategia que utiliza personas influyentes para promocionar productos o servicios.",
+                category: "Marketing Digital",
+                example: "Colaboraciones con YouTubers, instagramers"
+            },
+            {
+                term: "Content Marketing",
+                definition: "Creación y distribución de contenido valioso para atraer y retener audiencia.",
+                category: "Marketing Digital",
+                example: "Blogs, videos tutoriales, infografías"
+            },
+            {
+                term: "Growth Hacking",
+                definition: "Técnicas de marketing orientadas al crecimiento rápido y escalable.",
+                category: "Marketing Digital",
+                example: "Dropbox dando espacio extra por referir amigos"
+            },
+            {
+                term: "Buyer Persona",
+                definition: "Representación ficticia del cliente ideal basada en datos reales y investigación.",
+                category: "Estrategia",
+                example: "María, 35 años, profesional, madre soltera, valora la practicidad"
+            },
+            {
+                term: "Customer Journey",
+                definition: "Proceso completo que vive un cliente desde que conoce la marca hasta la compra y post-venta.",
+                category: "Estrategia",
+                example: "Conocimiento > Consideración > Decisión > Retención"
+            },
+            {
+                term: "Inbound Marketing",
+                definition: "Metodología que atrae clientes creando contenido valioso y experiencias personalizadas.",
+                category: "Marketing Digital",
+                example: "Blog con contenido útil que genera leads orgánicos"
+            },
+            {
+                term: "Outbound Marketing",
+                definition: "Marketing tradicional que busca activamente a los clientes mediante publicidad interrumpida.",
+                category: "Marketing Tradicional",
+                example: "Comerciales de TV, llamadas telefónicas, emails masivos"
+            }
+        ];
+
+        let viewedTerms = new Set();
+        let currentQuiz = [];
+        let currentQuestion = 0;
+        let quizScore = 0;
+        let filteredTerms = [...glossaryTerms];
+
+        // Inicializar la aplicación
+        document.addEventListener('DOMContentLoaded', function() {
+            displayTerms(glossaryTerms);
+            updateStats();
+            
+            // Agregar listener para búsqueda en tiempo real
+            document.getElementById('searchInput').addEventListener('input', function() {
+                searchTerms();
+            });
+        });
+
+        function displayTerms(terms) {
+            const grid = document.getElementById('glossaryGrid');
+            grid.innerHTML = '';
+            
+            terms.forEach((termObj, index) => {
+                const card = document.createElement('div');
+                card.className = 'term-card fade-in';
+                card.onclick = () => markAsViewed(termObj.term);
+                
+                const icon = getCategoryIcon(termObj.category);
+                
+                card.innerHTML = `
+                    <div class="floating-icon">${icon}</div>
+                    <div class="term-title">
+                        ${termObj.term}
+                        <span class="category-tag">${termObj.category}</span>
+                    </div>
+                    <div class="term-definition">${termObj.definition}</div>
+                    <div class="term-example"><strong>Ejemplo:</strong> ${termObj.example}</div>
+                `;
+                
+                grid.appendChild(card);
+            });
+        }
+
+        function getCategoryIcon(category) {
+            const icons = {
+                '4Ps': '🎯',
+                '4Cs': '👥',
+                'Conceptos Básicos': '📚',
+                'Clasificación': '📊',
+                'Elementos del Producto': '📦',
+                'Gestión de Producto': '⚙️',
+                'Ciclo de Vida': '🔄',
+                'Estrategia': '🎲',
+                'Marketing Digital': '💻',
+                'Marca': '🏷️',
+                'Métricas': '📈',
+                'Investigación': '🔍',
+                'Análisis': '📋',
+                'Marketing Tradicional': '📺'
+            };
+            return icons[category] || '📌';
+        }
+
+        function markAsViewed(term) {
+            viewedTerms.add(term);
+            updateStats();
+        }
+
+        function updateStats() {
+            document.getElementById('totalTerms').textContent = glossaryTerms.length;
+            document.getElementById('viewedTerms').textContent = viewedTerms.size;
+            document.getElementById('quizScore').textContent = quizScore;
+            
+            const progress = (viewedTerms.size / glossaryTerms.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function showRandomTerm() {
+            const randomIndex = Math.floor(Math.random() * glossaryTerms.length);
+            const randomTerm = glossaryTerms[randomIndex];
+            displayTerms([randomTerm]);
+            markAsViewed(randomTerm.term);
+        }
+
+        function showAllTerms() {
+            displayTerms(glossaryTerms);
+        }
+
+        function showByCategory(category) {
+            const categoryTerms = glossaryTerms.filter(term => term.category === category);
+            displayTerms(categoryTerms);
+        }
+
+        function searchTerms() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            
+            if (searchTerm === '') {
+                filteredTerms = [...glossaryTerms];
+            } else {
+                filteredTerms = glossaryTerms.filter(termObj => 
+                    termObj.term.toLowerCase().includes(searchTerm) ||
+                    termObj.definition.toLowerCase().includes(searchTerm) ||
+                    termObj.category.toLowerCase().includes(searchTerm) ||
+                    termObj.example.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            displayTerms(filteredTerms);
+        }
+
+        function startQuiz() {
+            // Seleccionar 10 términos aleatorios para el quiz
+            const shuffled = [...glossaryTerms].sort(() => 0.5 - Math.random());
+            currentQuiz = shuffled.slice(0, 10);
+            currentQuestion = 0;
+            quizScore = 0;
+            
+            document.getElementById('quizModal').style.display = 'block';
+            showQuestion();
+        }
+
+        function showQuestion() {
+            if (currentQuestion >= currentQuiz.length) {
+                showQuizResults();
+                return;
+            }
+            
+            const question = currentQuiz[currentQuestion];
+            const allTerms = [...glossaryTerms];
+            const wrongAnswers = allTerms
+                .filter(t => t.term !== question.term)
+                .sort(() => 0.5 - Math.random())
+                .slice(0, 3);
+            
+            const options = [question, ...wrongAnswers].sort(() => 0.5 - Math.random());
+            
+            const quizContainer = document.getElementById('quizContainer');
+            quizContainer.innerHTML = `
+                <h3>Pregunta ${currentQuestion + 1} de ${currentQuiz.length}</h3>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: ${(currentQuestion / currentQuiz.length) * 100}%"></div>
+                </div>
+                <div class="quiz-question">
+                    <strong>¿Cuál es la definición correcta de "${question.term}"?</strong>
+                </div>
+                <div class="quiz-options" id="quizOptions">
+                    ${options.map((option, index) => `
+                        <div class="quiz-option" onclick="selectOption(${index}, '${option.term === question.term}')">
+                            ${option.definition}
+                        </div>
+                    `).join('')}
+                </div>
+                <button class="btn" onclick="nextQuestion()" id="nextBtn" style="display: none;">Siguiente</button>
+            `;
+        }
+
+        function selectOption(index, isCorrect) {
+            const options = document.querySelectorAll('.quiz-option');
+            options.forEach(option => option.style.pointerEvents = 'none');
+            
+            if (isCorrect === 'true') {
+                options[index].classList.add('correct');
+                quizScore += 10;
+            } else {
+                options[index].classList.add('incorrect');
+                // Mostrar la respuesta correcta
+                options.forEach((option, idx) => {
+                    if (option.textContent.trim() === currentQuiz[currentQuestion].definition) {
+                        option.classList.add('correct');
+                    }
+                });
+            }
+            
+            document.getElementById('nextBtn').style.display = 'inline-block';
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            setTimeout(() => {
+                showQuestion();
+            }, 500);
+        }
+
+        function showQuizResults() {
+            const percentage = (quizScore / (currentQuiz.length * 10)) * 100;
+            let message = '';
+            let emoji = '';
+            
+            if (percentage >= 90) {
+                message = '¡Excelente! Dominas muy bien los conceptos';
+                emoji = '🏆';
+            } else if (percentage >= 70) {
+                message = '¡Muy bien! Tienes un buen conocimiento';
+                emoji = '🎉';
+            } else if (percentage >= 50) {
+                message = 'Bien, pero puedes mejorar. ¡Sigue estudiando!';
+                emoji = '👍';
+            } else {
+                message = 'Necesitas repasar más los conceptos';
+                emoji = '📚';
+            }
+            
+            document.getElementById('quizContainer').innerHTML = `
+                <div style="text-align: center;">
+                    <h2>${emoji} Quiz Completado</h2>
+                    <div class="stat-number" style="font-size: 3rem; margin: 1rem 0;">${quizScore}</div>
+                    <p style="font-size: 1.2rem; margin: 1rem 0;">Puntuación: ${percentage.toFixed(1)}%</p>
+                    <p style="margin: 1rem 0;">${message}</p>
+                    <button class="btn" onclick="startQuiz()">🔄 Intentar de Nuevo</button>
+                    <button class="btn secondary" onclick="closeQuiz()" style="margin-left: 1rem;">✅ Finalizar</button>
+                </div>
+            `;
+            
+            updateStats();
+        }
+
+        function closeQuiz() {
+            document.getElementById('quizModal').style.display = 'none';
+        }
+
+        // Funcionalidades adicionales
+        function showStatistics() {
+            const categoryCount = {};
+            glossaryTerms.forEach(term => {
+                categoryCount[term.category] = (categoryCount[term.category] || 0) + 1;
+            });
+            
+            let statsHtml = '<h3>📊 Estadísticas del Glosario</h3>';
+            Object.entries(categoryCount).forEach(([category, count]) => {
+                const icon = getCategoryIcon(category);
+                statsHtml += `<p>${icon} ${category}: ${count} términos</p>`;
+            });
+            
+            alert(statsHtml);
+        }
+
+        // Funcionalidad de exportar términos estudiados
+        function exportProgress() {
+            const studiedTerms = Array.from(viewedTerms);
+            const progress = {
+                totalTerms: glossaryTerms.length,
+                studiedTerms: studiedTerms,
+                studiedCount: studiedTerms.length,
+                percentage: ((studiedTerms.length / glossaryTerms.length) * 100).toFixed(1),
+                quizScore: quizScore,
+                timestamp: new Date().toISOString()
+            };
+            
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(progress, null, 2));
+            const downloadAnchorNode = document.createElement('a');
+            downloadAnchorNode.setAttribute("href", dataStr);
+            downloadAnchorNode.setAttribute("download", "progreso_glosario_marketing.json");
+            document.body.appendChild(downloadAnchorNode);
+            downloadAnchorNode.click();
+            downloadAnchorNode.remove();
+        }
+
+        // Agregar botones adicionales
+        document.addEventListener('DOMContentLoaded', function() {
+            const controlsDiv = document.querySelector('.game-controls');
+            
+            // Botón de estadísticas
+            const statsBtn = document.createElement('button');
+            statsBtn.className = 'btn';
+            statsBtn.innerHTML = '📊 Estadísticas';
+            statsBtn.onclick = showStatistics;
+            controlsDiv.appendChild(statsBtn);
+            
+            // Botón de exportar progreso
+            const exportBtn = document.createElement('button');
+            exportBtn.className = 'btn secondary';
+            exportBtn.innerHTML = '💾 Exportar Progreso';
+            exportBtn.onclick = exportProgress;
+            controlsDiv.appendChild(exportBtn);
+        });
+
+        // Función para mostrar términos favoritos (simulación)
+        function toggleFavorite(term) {
+            // Esta funcionalidad se podría implementar con localStorage en un entorno real
+            console.log('Término marcado como favorito:', term);
+        }
+
+        // Función de ayuda
+        function showHelp() {
+            const helpContent = `
+                <h3>🎮 Cómo usar el Glosario Interactivo</h3>
+                <ul style="text-align: left; margin: 1rem 0;">
+                    <li><strong>🎲 Término Aleatorio:</strong> Muestra un término al azar para estudiar</li>
+                    <li><strong>📋 Ver Todos:</strong> Muestra todos los términos disponibles</li>
+                    <li><strong>🧠 Quiz:</strong> Inicia un quiz de 10 preguntas aleatorias</li>
+                    <li><strong>4P's/4C's:</strong> Filtra términos por categoría</li>
+                    <li><strong>🔍 Buscar:</strong> Busca términos por palabra clave</li>
+                    <li><strong>📊 Estadísticas:</strong> Muestra distribución por categorías</li>
+                    <li><strong>💾 Exportar:</strong> Descarga tu progreso de estudio</li>
+                </ul>
+                <p><strong>💡 Consejo:</strong> Haz clic en cualquier tarjeta para marcarla como vista y seguir tu progreso.</p>
+            `;
+            
+            document.getElementById('quizContainer').innerHTML = helpContent + 
+                '<button class="btn" onclick="closeQuiz()">Entendido</button>';
+            document.getElementById('quizModal').style.display = 'block';
+        }
+
+        // Agregar botón de ayuda
+        document.addEventListener('DOMContentLoaded', function() {
+            const helpBtn = document.createElement('button');
+            helpBtn.className = 'btn';
+            helpBtn.innerHTML = '❓ Ayuda';
+            helpBtn.onclick = showHelp;
+            helpBtn.style.position = 'fixed';
+            helpBtn.style.bottom = '20px';
+            helpBtn.style.right = '20px';
+            helpBtn.style.zIndex = '999';
+            document.body.appendChild(helpBtn);
+        });
+
+        // Funcionalidad para modo nocturno
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+        }
+
+        // CSS adicional para modo nocturno
+        const darkModeCSS = `
+            .dark-mode {
+                background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+            }
+            .dark-mode .header {
+                background: rgba(45, 55, 72, 0.95);
+                color: white;
+            }
+            .dark-mode .term-card {
+                background: rgba(45, 55, 72, 0.9);
+                color: white;
+            }
+            .dark-mode .search-input {
+                background: rgba(45, 55, 72, 0.9);
+                color: white;
+            }
+        `;
+
+        // Agregar CSS para modo nocturno
+        const styleSheet = document.createElement('style');
+        styleSheet.textContent = darkModeCSS;
+        document.head.appendChild(styleSheet);
+    </script>
+</body>
+</html>
