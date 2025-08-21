@@ -389,7 +389,7 @@
                 term: "Plaza",
                 definition: "Canales de distribución y puntos de venta donde el producto estará disponible para los consumidores.",
                 category: "4Ps",
-                example: "Tiendas físicas, e commerce, distribuidores"
+                example: "Tiendas físicas, e-commerce, distribuidores"
             },
             {
                 term: "Promoción",
@@ -548,7 +548,7 @@
                 example: "Salesforce, HubSpot"
             },
             {
-                term: "E commerce",
+                term: "E-commerce",
                 definition: "Comercio electrónico que permite compra y venta de productos a través de internet.",
                 category: "Marketing Digital",
                 example: "Amazon, MercadoLibre"
@@ -901,11 +901,6 @@
                 categoryCount[term.category] = (categoryCount[term.category] || 0) + 1;
             });
             
-            let statsHtml = '<h3>📊 Estadísticas del Glosario</h3>';
-            Object.entries(categoryCount).forEach(([category, count]) => {
-                const icon = getCategoryIcon(category);
-                statsHtml += `<p>${icon} ${category}: ${count} términos</p>`;
-            });
             
             alert(statsHtml);
         }
@@ -915,17 +910,12 @@
         document.addEventListener('DOMContentLoaded', function() {
             const controlsDiv = document.querySelector('.game-controls');
             
-            // Botón de estadísticas
-            const statsBtn = document.createElement('button');
-            statsBtn.className = 'btn';
-            statsBtn.innerHTML = '📊 Estadísticas';
-            statsBtn.onclick = showStatistics;
-            controlsDiv.appendChild(statsBtn);
+
             
             // Botón de exportar progreso
             const exportBtn = document.createElement('button');
             exportBtn.className = 'btn secondary';
-            exportBtn.innerHTML = 'Progreso';
+            exportBtn.innerHTML = '💾 Exportar Progreso';
             exportBtn.onclick = exportProgress;
             controlsDiv.appendChild(exportBtn);
         });
@@ -945,8 +935,7 @@
                     <li><strong>📋 Ver Todos:</strong> Muestra todos los términos disponibles</li>
                     <li><strong>🧠 Quiz:</strong> Inicia un quiz de 10 preguntas aleatorias</li>
                     <li><strong>4P's/4C's:</strong> Filtra términos por categoría</li>
-                    <li><strong>🔍 Buscar:</strong> Busca términos por palabra clave</li>
-                    <li><strong>📊 Estadísticas:</strong> Muestra distribución por categorías</li>
+                    <li><strong>🔍 Buscar:</strong> Busca términos por palabra clave</li>                    
                 </ul>
                 <p><strong>💡 Consejo:</strong> Haz clic en cualquier tarjeta para marcarla como vista y seguir tu progreso.</p>
             `;
